@@ -16,7 +16,7 @@ type LoadOptions struct {
 // Load loads the config from the given file path.
 // If the file path is empty, it will load the config from the default file path.
 // Default file path is "${PWD}/.config.yml".
-func Load(config any, options ...LoadOptions) error {
+func Load(config any, options ...*LoadOptions) error {
 	filepathX := fs.JoinPath(fs.CurrentDir(), ".config.yml")
 	if len(options) > 0 {
 		optionsX := options[0]
