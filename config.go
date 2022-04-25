@@ -7,19 +7,23 @@ import (
 	"github.com/go-zoox/tag/datasource"
 )
 
+// LoadOptions is the options for Load
 type LoadOptions struct {
-	Id       string
+	ID       string
 	FilePath string
 }
 
+// Load loads the config from the given file path.
+// If the file path is empty, it will load the config from the default file path.
+// Default file path is "${PWD}/.config.yml".
 func Load(config any, options ...LoadOptions) error {
 	filepathX := fs.JoinPath(fs.CurrentDir(), ".config.yml")
 	if len(options) > 0 {
 		optionsX := options[0]
 		if optionsX.FilePath != "" {
 			filepathX = optionsX.FilePath
-		} else if optionsX.Id != "" {
-			filepathX = fs.JoinPath(fs.CurrentDir(), "."+optionsX.Id+".yml")
+		} else if optionsX.ID != "" {
+			filepathX = fs.JoinPath(fs.CurrentDir(), "."+optionsX.ID+".yml")
 		}
 	}
 
