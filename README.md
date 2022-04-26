@@ -36,10 +36,10 @@ type Config struct {
 }
 
 func main() {
-	var cfg Config
-	if err := Load(&cfg); err != nil {
-		t.Fatal(err)
-	}
+  var cfg Config
+  if err := Load(&cfg); err != nil {
+    panic(err)
+  }
 }
 ```
 
