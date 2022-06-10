@@ -7,6 +7,24 @@
 [![GitHub issues](https://img.shields.io/github/issues/go-zoox/config.svg)](https://github.com/go-zoox/config/issues)
 [![Release](https://img.shields.io/github/tag/go-zoox/config.svg?label=Release)](https://github.com/go-zoox/config/tags)
 
+### Features
+* [ ] Support Types
+  * [x] YAML
+  * [ ] JSON
+  * [ ] TOML
+  * [ ] ENV
+* [ ] Support Object Storage
+  * [ ] S3
+  * [ ] ALI OSS
+  * [ ] Tencent COS
+* [ ] Support Database
+  * [ ] Redis
+  * [ ] MongoDB
+  * [ ] Etcd
+* [ ] Support Configuration Center
+  * [ ] Apollo
+  * [ ] Nacos 
+
 ## Installation
 To install the package, run:
 ```bash
