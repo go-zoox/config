@@ -1,6 +1,8 @@
 package config
 
 import (
+	"fmt"
+
 	"github.com/go-zoox/fs"
 	"github.com/go-zoox/fs/type/yaml"
 	"github.com/go-zoox/tag"
@@ -25,6 +27,10 @@ func Load(config any, options ...*LoadOptions) error {
 		} else if optionsX.ID != "" {
 			filepathX = fs.JoinPath(fs.CurrentDir(), "."+optionsX.ID+".yml")
 		}
+	}
+
+	if !fs.IsExist(filepathX) {
+		return fmt.Errorf("config path (%s) not found", filepathX)
 	}
 
 	configYaml := make(map[string]any)
