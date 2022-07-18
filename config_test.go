@@ -22,6 +22,10 @@ func TestConfig(t *testing.T) {
 				ServicePort int64  `config:"service_port"`
 			} `config:"backend"`
 		} `config:"rules"`
+		Struc struct {
+			Field1 string `config:"field1"`
+			Field2 string `config:"field2"`
+		} `config:"struct"`
 	}
 	var cfg Config
 	if err := Load(&cfg); err != nil {
