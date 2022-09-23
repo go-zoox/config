@@ -36,15 +36,15 @@ func Load(config any, options ...*LoadOptions) error {
 			filepathX = optionsX.FilePath
 			ext := fs.ExtName(filepathX)
 			switch ext {
-			case "yml", "yaml":
+			case ".yml", ".yaml":
 				fileType = "YAML"
-			case "json":
+			case ".json":
 				fileType = "JSON"
-			case "toml":
+			case ".toml":
 				fileType = "TOML"
-			case "ini":
+			case ".ini":
 				fileType = "INI"
-			case "host":
+			case ".host":
 				fileType = "HOST"
 			default:
 				return fmt.Errorf("unsupported file type: %s", ext)
