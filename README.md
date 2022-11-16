@@ -10,9 +10,11 @@
 ### Features
 * [ ] Support Types
   * [x] YAML
-  * [ ] JSON
-  * [ ] TOML
-  * [ ] ENV
+  * [x] JSON
+  * [x] TOML
+  * [x] INI
+  * [ ] DotEnv
+  * [x] ENV
 * [ ] Support Object Storage
   * [ ] S3
   * [ ] ALI OSS
