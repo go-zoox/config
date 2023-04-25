@@ -12,6 +12,8 @@ import (
 	"github.com/go-zoox/tag/datasource"
 )
 
+const DefaultFileType = "YAML"
+
 // LoadOptions is the options for Load
 type LoadOptions struct {
 	// FilePath is the config file path.
@@ -29,10 +31,13 @@ type LoadOptions struct {
 // Default file path is "${PWD}/.config.yml".
 func Load(config any, options ...*LoadOptions) error {
 	filepathX := fs.JoinPath(fs.CurrentDir(), ".config.yml")
-	fileType := "YAML"
+	var fileType string
+
 	if len(options) > 0 {
 		optionsX := options[0]
-		if optionsX.FilePath != "" {
+		fileType := optionsX.Type
+
+		if optionsX.FilePath != "" && fileType == "" {
 			filepathX = optionsX.FilePath
 			ext := fs.ExtName(filepathX)
 
@@ -53,6 +58,10 @@ func Load(config any, options ...*LoadOptions) error {
 		} else if optionsX.ID != "" {
 			filepathX = fs.JoinPath(fs.CurrentDir(), "."+optionsX.ID+".yml")
 		}
+	}
+
+	if fileType == "" {
+		fileType = DefaultFileType
 	}
 
 	if !fs.IsExist(filepathX) {
