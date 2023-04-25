@@ -35,8 +35,9 @@ func Load(config any, options ...*LoadOptions) error {
 		if optionsX.FilePath != "" {
 			filepathX = optionsX.FilePath
 			ext := fs.ExtName(filepathX)
+
 			switch ext {
-			case ".yml", ".yaml":
+			case "", ".yml", ".yaml":
 				fileType = "YAML"
 			case ".json":
 				fileType = "JSON"
