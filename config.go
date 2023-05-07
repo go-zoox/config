@@ -40,14 +40,7 @@ func Load(config any, options ...*LoadOptions) error {
 			fileType = optionsX.Type
 		}
 
-		if optionsX.Name != "" {
-			// ${PWD}/.{NAME}.yml > ${PWD}/.{NAME}.yml > /etc/{NAME}/config.yml (user is root) | $HOME/.config/{NAME}/config.yml
-			if fs.IsExist(fs.JoinCurrentDir("." + optionsX.Name + ".yml")) {
-				filepathX = fs.JoinCurrentDir("." + optionsX.Name + ".yml")
-			} else {
-				filepathX = fs.JoinConfigDir(optionsX.Name)
-			}
-		} else if optionsX.FilePath != "" {
+		if optionsX.FilePath != "" {
 			filepathX = optionsX.FilePath
 			ext := fs.ExtName(filepathX)
 
@@ -64,6 +57,13 @@ func Load(config any, options ...*LoadOptions) error {
 				fileType = "HOST"
 			default:
 				return fmt.Errorf("unsupported file type: %s", ext)
+			}
+		} else if optionsX.Name != "" {
+			// ${PWD}/.{NAME}.yml > ${PWD}/.{NAME}.yml > /etc/{NAME}/config.yml (user is root) | $HOME/.config/{NAME}/config.yml
+			if fs.IsExist(fs.JoinCurrentDir("." + optionsX.Name + ".yml")) {
+				filepathX = fs.JoinCurrentDir("." + optionsX.Name + ".yml")
+			} else {
+				filepathX = fs.JoinConfigDir(optionsX.Name)
 			}
 		}
 	}
