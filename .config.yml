@@ -1,5 +1,6 @@
 version: "1.0.0"
 
+# gzingress
 server:
   ports:
     - 8080
@@ -19,3 +20,16 @@ rules:
     backend:
       service_name: backend-b
       service_port: 8080
+
+# gzfly
+relay: wss://example.com/ws
+
+auth: client_id:client_secret
+
+actions:
+  action1:
+    target: client_name:pk
+    bind: tcp:0.0.0.0:17890:192.168.1.2:17890
+  action2:
+    target: client_name:pk
+    socks5: 0.0.0.0:17890

@@ -4,29 +4,44 @@ import (
 	"testing"
 )
 
+type Config struct {
+	Version string `config:"version"`
+	// gzingress
+	Server struct {
+		Ports   []int64 `config:"ports"`
+		Cleanup string  `config:"cleanup"`
+	} `config:"server"`
+	Logger struct {
+		Level string `config:"level"`
+		Trace bool   `config:"trace"`
+	} `config:"logger"`
+	Rules []struct {
+		Host    string `config:"host"`
+		Backend struct {
+			ServiceName string `config:"service_name"`
+			ServicePort int64  `config:"service_port"`
+		} `config:"backend"`
+	} `config:"rules"`
+	Struc struct {
+		Field1 string `config:"field1"`
+		Field2 string `config:"field2"`
+	} `config:"struct"`
+
+	// gzfly
+	Relay  string `config:"relay"`
+	Auth   string `config:"auth"`
+	Crypto string `config:"crypto"`
+	//
+	Actions map[string]Action `config:"actions"`
+}
+
+type Action struct {
+	Target string `config:"target"`
+	Bind   string `config:"bind"`
+	Socks5 string `config:"socks5"`
+}
+
 func TestConfig(t *testing.T) {
-	type Config struct {
-		Version string `config:"version"`
-		Server  struct {
-			Ports   []int64 `config:"ports"`
-			Cleanup string  `config:"cleanup"`
-		} `config:"server"`
-		Logger struct {
-			Level string `config:"level"`
-			Trace bool   `config:"trace"`
-		} `config:"logger"`
-		Rules []struct {
-			Host    string `config:"host"`
-			Backend struct {
-				ServiceName string `config:"service_name"`
-				ServicePort int64  `config:"service_port"`
-			} `config:"backend"`
-		} `config:"rules"`
-		Struc struct {
-			Field1 string `config:"field1"`
-			Field2 string `config:"field2"`
-		} `config:"struct"`
-	}
 	var cfg Config
 	if err := Load(&cfg); err != nil {
 		t.Fatal(err)
@@ -90,4 +105,16 @@ func TestConfig(t *testing.T) {
 		t.Fatal("rules[1].backend.service_port is not 8080")
 	}
 
+	// gzfly
+	if cfg.Actions["action1"].Target != "client_name:pk" {
+		t.Fatalf("actions.action1.target is not %s, but got %s", "client_name:pk", cfg.Actions["action1"].Target)
+	}
+
+	if cfg.Actions["action1"].Bind != "tcp:0.0.0.0:17890:192.168.1.2:17890" {
+		t.Fatalf("actions.action1.bind is not %s, but got %s", "tcp:0.0.0.0:17890:192.168.1.2:17890", cfg.Actions["action1"].Bind)
+	}
+
+	if cfg.Actions["action1"].Socks5 != "" {
+		t.Fatal("actions.action1.socks5 is not empty string")
+	}
 }
