@@ -22,22 +22,32 @@ type LoadOptions struct {
 	// options: YAML | JSON | TOML | INI | HOST, default: YAML
 	Type string
 
-	// Unique ID for the config file, default: config, and type is YAML
-	ID string
+	// Unique Name for the config file, default: "", and type is YAML
+	Name string
 }
 
 // Load loads the config from the given file path.
 // If the file path is empty, it will load the config from the default file path.
-// Default file path is "${PWD}/.config.yml".
+// Default file path is ${PWD}/.{NAME}.yml > ${PWD}/.config.yml > /etc/{NAME}/config.yml (user is root) | $HOME/.config/{NAME}/config.yml.
 func Load(config any, options ...*LoadOptions) error {
-	filepathX := fs.JoinPath(fs.CurrentDir(), ".config.yml")
-	var fileType string
+	fileType := DefaultFileType
+	filepathX := fs.JoinCurrentDir(".config.yml")
 
 	if len(options) > 0 {
 		optionsX := options[0]
-		fileType := optionsX.Type
 
-		if optionsX.FilePath != "" && fileType == "" {
+		if optionsX.Type != "" {
+			fileType = optionsX.Type
+		}
+
+		if optionsX.Name != "" {
+			// ${PWD}/.{NAME}.yml > ${PWD}/.{NAME}.yml > /etc/{NAME}/config.yml (user is root) | $HOME/.config/{NAME}/config.yml
+			if fs.IsExist(fs.JoinCurrentDir("." + optionsX.Name + ".yml")) {
+				filepathX = fs.JoinCurrentDir("." + optionsX.Name + ".yml")
+			} else {
+				filepathX = fs.JoinConfigDir(optionsX.Name)
+			}
+		} else if optionsX.FilePath != "" {
 			filepathX = optionsX.FilePath
 			ext := fs.ExtName(filepathX)
 
@@ -55,13 +65,7 @@ func Load(config any, options ...*LoadOptions) error {
 			default:
 				return fmt.Errorf("unsupported file type: %s", ext)
 			}
-		} else if optionsX.ID != "" {
-			filepathX = fs.JoinPath(fs.CurrentDir(), "."+optionsX.ID+".yml")
 		}
-	}
-
-	if fileType == "" {
-		fileType = DefaultFileType
 	}
 
 	if !fs.IsExist(filepathX) {

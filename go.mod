@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/go-zoox/encoding v1.2.1
-	github.com/go-zoox/fs v1.3.11
+	github.com/go-zoox/fs v1.3.13
 	github.com/go-zoox/tag v1.2.2
 )
 
