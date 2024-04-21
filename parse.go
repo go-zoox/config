@@ -11,6 +11,7 @@ import (
 	"github.com/go-zoox/tag/datasource"
 )
 
+// ParseOptions is the options for Parse.
 type ParseOptions struct {
 	// The type of the config file, default is "YAML".
 	// options: YAML | JSON | TOML | INI | HOST

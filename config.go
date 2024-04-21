@@ -12,6 +12,7 @@ import (
 	"github.com/go-zoox/tag/datasource"
 )
 
+// DefaultFileType is the default file type.
 const DefaultFileType = "YAML"
 
 // LoadOptions is the options for Load
