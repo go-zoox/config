@@ -28,6 +28,9 @@ type LoadOptions struct {
 
 	// Config name, default: config.yml, and type is YAML
 	Name string
+
+	// AllowEnv is whether to allow environment variables in the config file, default is false.
+	AllowEnv bool
 }
 
 // Load loads the config from the given file path.
@@ -44,8 +47,9 @@ func Load(config any, options ...*LoadOptions) error {
 	fileType := DefaultFileType
 	filepathX := fs.JoinCurrentDir(".config.yml")
 
+	optionsX := &LoadOptions{}
 	if len(options) > 0 && options[0] != nil {
-		optionsX := options[0]
+		optionsX = options[0]
 
 		if optionsX.FilePath != "" {
 			filepathX = optionsX.FilePath
@@ -84,6 +88,10 @@ func Load(config any, options ...*LoadOptions) error {
 	}
 
 	if !fs.IsExist(filepathX) {
+		if optionsX.AllowEnv {
+			return Env(config)
+		}
+
 		return fmt.Errorf("config path (%s) not found", filepathX)
 	}
 
@@ -115,5 +123,13 @@ func Load(config any, options ...*LoadOptions) error {
 
 	tg := tag.New("config", datasource.NewMapDataSource(configDataSource))
 
-	return tg.Decode(config)
+	if err := tg.Decode(config); err != nil {
+		return err
+	}
+
+	if optionsX.AllowEnv {
+		return Env(config)
+	}
+
+	return nil
 }

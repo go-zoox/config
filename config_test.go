@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"testing"
 )
 
@@ -33,6 +34,9 @@ type Config struct {
 	Crypto string `config:"crypto"`
 	//
 	Actions map[string]Action `config:"actions"`
+
+	//
+	AllowEnvValue string `config:"allow_env_value" env:"ALLOW_ENV_VALUE"`
 }
 
 type Action struct {
@@ -116,5 +120,20 @@ func TestConfig(t *testing.T) {
 
 	if cfg.Actions["action1"].Socks5 != "" {
 		t.Fatal("actions.action1.socks5 is not empty string")
+	}
+}
+
+func TestConfigAllowEnv(t *testing.T) {
+	var cfg Config
+	os.Setenv("ALLOW_ENV_VALUE", "value_from_env_with_allow_env")
+	if err := Load(&cfg, &LoadOptions{
+		FilePath: "./testdata/config.yml",
+		AllowEnv: true,
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if cfg.AllowEnvValue != "value_from_env_with_allow_env" {
+		t.Fatalf("allow_env_value is not value_from_env_with_allow_env, but got %s", cfg.AllowEnvValue)
 	}
 }
