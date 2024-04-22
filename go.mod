@@ -3,10 +3,10 @@ module github.com/go-zoox/config
 go 1.18
 
 require (
-	github.com/go-zoox/core-utils v1.2.9
+	github.com/go-zoox/core-utils v1.3.5
 	github.com/go-zoox/encoding v1.2.1
 	github.com/go-zoox/fs v1.3.13
-	github.com/go-zoox/tag v1.2.2
+	github.com/go-zoox/tag v1.2.7
 )
 
 require (
