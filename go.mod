@@ -6,7 +6,7 @@ require (
 	github.com/go-zoox/core-utils v1.4.7
 	github.com/go-zoox/encoding v1.2.1
 	github.com/go-zoox/fs v1.3.13
-	github.com/go-zoox/tag v1.3.3
+	github.com/go-zoox/tag v1.3.4
 )
 
 require (
