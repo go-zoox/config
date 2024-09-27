@@ -118,3 +118,31 @@ func TestConfig(t *testing.T) {
 		t.Fatal("actions.action1.socks5 is not empty string")
 	}
 }
+
+func TestConfigFromURL(t *testing.T) {
+	type Config2 struct {
+		Title   string `config:"title"`
+		TagLine string `config:"tagline"`
+		Author  struct {
+			Name     string `config:"name"`
+			Nickname string `config:"nickname"`
+			Email    string `config:"email"`
+			GitHub   string `config:"github"`
+		} `config:"author"`
+	}
+	var cfg Config2
+	err := Load(&cfg, &LoadOptions{
+		FilePath: "https://raw.githubusercontent.com/whatwewant/whatwewant.github.io/refs/heads/master/_config.yml",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if cfg.Title != "Cole" {
+		t.Fatal("title is not Cole")
+	}
+
+	if cfg.TagLine != "Free as the wind." {
+		t.Fatal("tagline is not Free as the wind.")
+	}
+}
