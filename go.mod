@@ -9,7 +9,7 @@ require (
 	github.com/go-zoox/fetch v1.8.2
 	github.com/go-zoox/fs v1.3.15
 	github.com/go-zoox/logger v1.5.1
-	github.com/go-zoox/tag v1.3.4
+	github.com/go-zoox/tag v1.3.5
 )
 
 require (
